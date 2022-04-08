@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "former2"
+Description: ""
+Resources:
+    EC2CoudWatchIAMRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+            Path: "/"
+            RoleName: "EC2-CloudWatch"
+            AssumeRolePolicyDocument: 
+              Statement:
+              - Effect: Allow
+                Principal:
+                  Service:
+                  - ec2.amazonaws.com
+                Action:
+                - sts:AssumeRole
+            MaxSessionDuration: 3600
+            ManagedPolicyArns: 
+              - "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+            Description: "Allows EC2 instances to call AWS services on your behalf."
+
+Outputs:
+    NodeInstanceRoleArn:
+        Description: EC2 CloudWatch Role Arn
+        Value: !GetAtt EC2CoudWatchIAMRole.Arn
+        Export:
+          Name: EC2CoudWatchIAMRole-Arn
+    
